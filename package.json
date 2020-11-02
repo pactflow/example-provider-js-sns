@@ -1,0 +1,26 @@
+{
+  "name": "product-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node server.js",
+    "test:pact": "npx jest --testTimeout 30000 --testMatch \"**/*.pact.test.js\"",
+    "test:events": "node ./test/snsProducer.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "faker": "^4.1.0"
+  },
+  "devDependencies": {
+    "@pact-foundation/pact": "^9.11.1",
+    "@pact-foundation/pact-node": "^10.10.1",
+    "dotenv": "^8.2.0",
+    "eslint": "^6.8.0",
+    "aws-sdk": "^2.783.0",
+    "jest": "^25.5.4"
+  },
+  "license": "ISC"
+}

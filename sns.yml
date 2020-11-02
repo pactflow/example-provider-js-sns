@@ -1,0 +1,18 @@
+version: '2.1'
+
+services:
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME-localstack_main}"
+    image: localstack/localstack
+    network_mode: bridge
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=sns
+      - DEBUG=${DEBUG- }
+      - DATA_DIR=${DATA_DIR- }
+      - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR- }
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - DEFAULT_REGION=ap-southeast-2
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
