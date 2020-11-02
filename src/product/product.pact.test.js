@@ -25,6 +25,7 @@ describe("Message provider tests", () => {
     consumerVersionTags: ["master", "prod"], //the old way of specifying which pacts to verify
     // consumerVersionSelectors: [{ tag: 'master', latest: true }, { tag: 'prod', latest: true } ], // the new way of specifying which pacts to verify
     pactBrokerUrl: process.env.PACT_BROKER_BASE_URL,
+    enablePending: true,
   };
 
   const opts = {

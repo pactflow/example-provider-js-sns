@@ -22,7 +22,8 @@ To ensure that a verification is also run whenever a pact changes, we create a w
 
 See the [Pactflow CI/CD Workshop](https://github.com/pactflow/ci-cd-workshop).
 
-
+* Pact test: `make test`
+* Start the Provider API (with a local SNS setup): `make start`
 * Create a product: `make create-product`
 * Update a product: `make update-product`
 * Delete a product: `make delete-product`

@@ -5,8 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node server.js",
-    "test:pact": "npx jest --testTimeout 30000 --testMatch \"**/*.pact.test.js\"",
-    "test:events": "node ./test/snsProducer.js"
+    "test": "npx jest --testTimeout 30000 --testMatch \"**/*.pact.test.js\""
   },
   "dependencies": {
     "body-parser": "^1.19.0",
