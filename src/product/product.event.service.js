@@ -1,18 +1,21 @@
 const AWS = require("aws-sdk");
 const { productFromJson } = require("./product");
+const { createEvent } = require("./product.event")
 
 const TOPIC_ARN =
   process.env.TOPIC_ARN || "arn:aws:sns:ap-southeast-2:000000000000:products";
 
-class ProductEventRepository {
+class ProductEventService {
   async create(event) {
     const product = productFromJson(event);
     await this.publish(createEvent(product, "CREATED"));
   }
+
   async update(event) {
     const product = productFromJson(event);
     await this.publish(createEvent(product, "UPDATED"));
   }
+
   async delete(event) {
     const product = productFromJson(event);
     await this.publish(createEvent(product, "DELETED"));
@@ -29,17 +32,11 @@ class ProductEventRepository {
       TopicArn: TOPIC_ARN,
     };
 
-    console.log("ProductEventRepository - sending message:", message);
+    console.log("ProductEventService - sending message:", message);
 
     return SNS.publish(params).promise();
   }
 }
-
-const createEvent = (product, type) => ({
-  ...product,
-  event: type,
-  version: incrementVersion(product.version),
-});
 
 const incrementVersion = (v) => {
   const version = (v) ? parseInt(v.match(/[0-9]+/g)[0], 10) + 1 : 1
@@ -47,6 +44,6 @@ const incrementVersion = (v) => {
 };
 
 module.exports = {
-  ProductEventRepository,
+  ProductEventService,
   createEvent,
 };

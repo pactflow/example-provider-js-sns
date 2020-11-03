@@ -1,6 +1,6 @@
-const { ProductEventRepository } = require("./product.event.repository");
+const { ProductEventService } = require("./product.event.service");
 
-const repository = new ProductEventRepository();
+const repository = new ProductEventService();
 
 exports.create = async (req, res) => {
   console.log(req.body);

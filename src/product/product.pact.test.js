@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-expression object-literal-sort-keys max-classes-per-file no-empty */
 const { MessageProviderPact } = require("@pact-foundation/pact");
 const { Product } = require("./product");
-const { createEvent } = require("./product.event.repository");
+const { createEvent } = require("./product.event");
 
 describe("Message provider tests", () => {
   const baseOpts = {

@@ -1,4 +1,4 @@
-# Example Provider
+# Example NodeJS SNS Provider
 
 [![Build Status](https://travis-ci.com/pactflow/example-provider-js-sns.svg?branch=master)](https://travis-ci.com/pactflow/example-provider-js-sns)
 
@@ -6,24 +6,62 @@ This is an example of a Node provider that uses Pact, [Pactflow](https://pactflo
 
 It is using a public tenant on Pactflow, which you can access [here](https://test.pact.dius.com.au) using the credentials `dXfltyFMgNOFZAxr8io9wJ37iUpY42M`/`O5AIZWxelWbLvqMd8PkAVycBJh2Psyg1`. The latest version of the Example Consumer/Example Provider pact is published [here](https://test.pact.dius.com.au/pacts/provider/pactflow-example-provider-js-sns/consumer/pactflow-example-consumer/latest).
 
-## Pact verifications
+In the following diagram, we'll be testing the "Product Event API", a simple HTTP service that receives product updates via a REST API and publishes product events on the `product` topic.
 
-When using Pact in a CI/CD pipeline, there are two reasons for a pact verification task to take place:
+We need to be able to test that we are able to produce valid events to the SNS topic that matches what the consumer(s) can handle:
 
-   * When the provider changes (to make sure it does not break any existing consumer expectations)
-   * When a pact changes (to see if the provider is compatible with the new expectations)
+![SNS Architecture](docs/js-sns.png "SNS Architecture")
 
-When the provider changes, the pact verification task runs as part the provider's normal build pipeline, generally after the unit tests, and before any deployment takes place. This pact verification task is configured to dynamically fetch all the relevant pacts for the specified provider from Pactflow, verify them, and publish the results back to Pactflow.
+## Theory
 
-To ensure that a verification is also run whenever a pact changes, we create a webhook in Pactflow that triggers a provider build, and passes in the URL of the changed pact. Ideally, this would be a completely separate build from your normal provider pipeline, and it should just verify the changed pact.
+Modern distributed architectures are increasingly integrated in a decoupled, asynchronous fashion. Message queues such as ActiveMQ, RabbitMQ, SNS, SQS, Kafka and Kinesis are common, often integrated via small and frequent numbers of microservices (e.g. lambda).
 
+Pact supports these use cases, by abstracting away the _protocol_ and focussing on the messages passing between them.
+
+To reiterate: Pact does not know about the various message queueing technologies - there are simply too many! And more importantly, Pact is really about testing the _messages_ that pass between them, you can still write your standard _functional_ tests using other frameworks designed for such things.
+
+When writing tests, Pact takes the place of the intermediary (MQ/broker etc.) and confirms whether or not the consumer is able to _handle_ a given event, or that the provider will be able to _produce_ the correct message.
+
+### How to write tests?
+
+We recommend that you split the code that is responsible for handling the protocol specific things - in this case the SNS publishing code - and the piece of code that actually *produces* payload.
+
+You're probably familiar with layered architectures such as Ports and Adaptors (also referred to as a Hexagonal architecture). Following a modular architecture will allow you to do this much more easily:
+
+![Code Modularity](docs/ports-and-adapters.png "Code Modularity")
+
+This code base is setup with this modularity in mind (key files):
+
+* [REST API](server.js)
+* [Event Service (SNS Producer)](src/product/product.event.service.js)
+* Business Logic
+   * [Product](src/product/product.js)
+   * [Event Producer](src/product/product.event.js)
+
+The target of our [provider pact test](src/product/product.pact.test.js) is the [Event Producer](src/product/product.event.js), which is responsible for producing a Product update event, that the Event Service will publish to SNS.
+
+See also:
+
+* https://dius.com.au/2017/09/22/contract-testing-serverless-and-asynchronous-applications/
+* https://dius.com.au/2018/10/01/contract-testing-serverless-and-asynchronous-applications---part-2/
+
+## Pre-requisites
+
+**Software**:
+
+* [AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install-mac.html)
+*  https://docs.pactflow.io/docs/workshops/ci-cd/set-up-ci/prerequisites/
 
 ## Usage
 
-See the [Pactflow CI/CD Workshop](https://github.com/pactflow/ci-cd-workshop).
+See also the [Pactflow CI/CD Workshop](https://github.com/pactflow/ci-cd-workshop) for more background.
 
-* Pact test: `make test`
-* Start the Provider API (with a local SNS setup): `make start`
+### Testing
+* Run the Pact tests: `make test`
+
+### Running  locally
+
+* Start the Provider API (with a local SNS setup with localstack): `make start`
 * Create a product: `make create-product`
 * Update a product: `make update-product`
 * Delete a product: `make delete-product`
