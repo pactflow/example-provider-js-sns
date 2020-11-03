@@ -2,9 +2,13 @@
 
 [![Build Status](https://travis-ci.com/pactflow/example-provider-js-sns.svg?branch=master)](https://travis-ci.com/pactflow/example-provider-js-sns)
 
-This is an example of a Node provider that uses Pact, [Pactflow](https://pactflow.io) and Github Actions to ensure that it is compatible with the expectations its consumers have of it.
+[![Pact Status](https://test.pactflow.io/pacts/provider/pactflow-example-provider-js-sns/consumer/pactflow-example-consumer-js-sns/latest/badge.svg?label=provider)](https://test.pactflow.io/pacts/provider/pactflow-example-provider-js-sns/consumer/pactflow-example-consumer-js-sns/latest) (latest pact)
 
-It is using a public tenant on Pactflow, which you can access [here](https://test.pact.dius.com.au) using the credentials `dXfltyFMgNOFZAxr8io9wJ37iUpY42M`/`O5AIZWxelWbLvqMd8PkAVycBJh2Psyg1`. The latest version of the Example Consumer/Example Provider pact is published [here](https://test.pact.dius.com.au/pacts/provider/pactflow-example-provider-js-sns/consumer/pactflow-example-consumer/latest).
+[![Pact Status](https://test.pactflow.io/matrix/provider/pactflow-example-provider-js-sns/latest/prod/consumer/pactflow-example-consumer-js-sns/latest/prod/badge.svg?label=provider)](https://test.pactflow.io/pacts/provider/pactflow-example-provider-js-sns/consumer/pactflow-example-consumer-js-sns/latest/prod) (prod/prod pact)
+
+This is an example of a Node provider that uses Pact, [Pactflow](https://pactflow.io) and Travis CI to ensure that it is compatible with the expectations its consumers have of it.
+
+It is using a public tenant on Pactflow, which you can access [here](https://test.pactflow.io) using the credentials `dXfltyFMgNOFZAxr8io9wJ37iUpY42M`/`O5AIZWxelWbLvqMd8PkAVycBJh2Psyg1`. The latest version of the Example Consumer/Example Provider pact is published [here](https://test.pactflow.io/pacts/provider/pactflow-example-provider-js-sns/consumer/pactflow-example-consumer-js-sns/latest).
 
 In the following diagram, we'll be testing the "Product Event API", a simple HTTP service that receives product updates via a REST API and publishes product events on the `product` topic.
 
