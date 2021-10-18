@@ -6,10 +6,8 @@ const { createEvent } = require("./product.event");
 describe("Message provider tests", () => {
   const baseOpts = {
     logLevel: "INFO",
-    providerVersion: process.env.TRAVIS_COMMIT,
-    providerVersionTags: process.env.TRAVIS_BRANCH
-      ? [process.env.TRAVIS_BRANCH]
-      : [],
+    providerVersion: process.env.GIT_COMMIT,
+    providerVersionTags: process.env.GIT_BRANCH ? [process.env.GIT_BRANCH] : [],
   };
 
   // For builds triggered by a 'contract content changed' webhook,

@@ -9,7 +9,7 @@ export AWS_SNS_ENDPOINT
 export AWS_REGION
 
 # Only deploy from master
-ifeq ($(TRAVIS_BRANCH),master)
+ifeq ($(GIT_BRANCH),master)
 	DEPLOY_TARGET=deploy
 else
 	DEPLOY_TARGET=no_deploy
@@ -28,8 +28,8 @@ ci: test can_i_deploy $(DEPLOY_TARGET)
 # Use this for quick feedback when playing around with your workflows.
 fake_ci: .env
 	CI=true \
-	TRAVIS_COMMIT=`git rev-parse --short HEAD`+`date +%s` \
-	TRAVIS_BRANCH=`git rev-parse --abbrev-ref HEAD` \
+	GIT_COMMIT=`git rev-parse --short HEAD`+`date +%s` \
+	GIT_BRANCH=`git rev-parse --abbrev-ref HEAD` \
 	PACT_BROKER_PUBLISH_VERIFICATION_RESULTS=true \
 	make ci
 
@@ -38,8 +38,8 @@ ci_webhook: .env
 
 fake_ci_webhook:
 	CI=true \
-	TRAVIS_COMMIT=`git rev-parse --short HEAD`+`date +%s` \
-	TRAVIS_BRANCH=`git rev-parse --abbrev-ref HEAD` \
+	GIT_COMMIT=`git rev-parse --short HEAD`+`date +%s` \
+	GIT_BRANCH=`git rev-parse --abbrev-ref HEAD` \
 	PACT_BROKER_PUBLISH_VERIFICATION_RESULTS=true \
 	make ci_webhook
 
@@ -54,22 +54,20 @@ test: .env
 ## Deploy tasks
 ## =====================
 
-deploy: deploy_app tag_as_prod
+deploy: deploy_app record_deployment
 
 no_deploy:
 	@echo "Not deploying as not on master branch"
 
 can_i_deploy: .env
-	"${PACT_CLI}" broker can-i-deploy --pacticipant ${PACTICIPANT} --version ${TRAVIS_COMMIT} --to prod
+	"${PACT_CLI}" broker can-i-deploy --pacticipant ${PACTICIPANT} --version ${GIT_COMMIT} --to-environment prod
 
 deploy_app:
+	@"${PACT_CLI}" broker record_deployment --pacticipant ${PACTICIPANT} --version ${GIT_COMMIT} --environment production
 	@echo "Deploying to prod"
 
-tag_as_prod:
-	"${PACT_CLI}" broker create-version-tag \
-	  --pacticipant ${PACTICIPANT} \
-	  --version ${TRAVIS_COMMIT} \
-	  --tag prod
+record_deployment: .env
+	@"${PACT_CLI}" broker record-deployment --pacticipant ${PACTICIPANT} --version ${GIT_COMMIT} --environment production
 
 ## =====================
 ## Pactflow set up tasks
