@@ -34,7 +34,7 @@ fake_ci: .env
 	make ci
 
 ci_webhook: .env
-	npm run test:pact
+	npm run test
 
 fake_ci_webhook:
 	CI=true \
