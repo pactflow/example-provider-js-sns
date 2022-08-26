@@ -20,7 +20,7 @@ describe("Message provider tests", () => {
   // For 'normal' provider builds, fetch `master` and `prod` pacts for this provider
   const fetchPactsDynamicallyOpts = {
     provider: "pactflow-example-provider-js-sns",
-    consumerVersionTags: ["master", "prod"], //the old way of specifying which pacts to verify
+    consumerVersionTags: ["master", "prod", "main"], //the old way of specifying which pacts to verify
     // consumerVersionSelectors: [{ tag: 'master', latest: true }, { tag: 'prod', latest: true } ], // the new way of specifying which pacts to verify
     pactBrokerUrl: process.env.PACT_BROKER_BASE_URL,
     enablePending: true,
