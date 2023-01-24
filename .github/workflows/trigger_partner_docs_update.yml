@@ -11,17 +11,19 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger partner docs update
-        if: github.repository == 'pactflow/example-provider-js-sns'
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.GHTOKENFORTRIGGERINGPACTDOCSUPDATE }}
-          repository: pactflow/partners.pactflow.io
-          event-type: pactflow-example-provider-js-sns-updated
-      - name: Trigger docs update
-        if: github.repository == 'pactflow/example-provider-js-sns'
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.GHTOKENFORTRIGGERINGPACTDOCSUPDATE }}
-          repository: pactflow/docs.pactflow.io
-          event-type: pactflow-example-provider-js-sns-updated
+      - name: Trigger partners.pact.io update workflow
+        run: |
+          curl -X POST https://api.github.com/repos/pactflow/partners.pactflow.io/dispatches \
+                -H 'Accept: application/vnd.github.everest-preview+json' \
+                -H "Authorization: Bearer $GITHUB_TOKEN" \
+                -d '{"event_type": "pactflow-example-provider-js-sns-updated"}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GHTOKENFORTRIGGERINGPACTDOCSUPDATE }}
+      - name: Trigger docs.pact.io update workflow
+        run: |
+          curl -X POST https://api.github.com/repos/pactflow/docs.pactflow.io/dispatches \
+                -H 'Accept: application/vnd.github.everest-preview+json' \
+                -H "Authorization: Bearer $GITHUB_TOKEN" \
+                -d '{"event_type": "pactflow-example-provider-js-sns-updated"}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GHTOKENFORTRIGGERINGPACTDOCSUPDATE }}
