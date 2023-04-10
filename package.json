@@ -18,7 +18,7 @@
     "@pact-foundation/pact-node": "^10.17.2",
     "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
-    "aws-sdk": "^2.783.0",
+    "aws-sdk": "^2.1354.0",
     "jest": "^25.5.4"
   },
   "license": "ISC"
