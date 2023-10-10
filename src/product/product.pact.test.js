@@ -1,5 +1,5 @@
 /* tslint:disable:no-unused-expression object-literal-sort-keys max-classes-per-file no-empty */
-const { MessageProviderPact } = require("@pact-foundation/pact");
+const { MessageProviderPact, providerWithMetadata } = require("@pact-foundation/pact");
 const { Product } = require("./product");
 const { createEvent } = require("./product.event");
 const cp = require("child_process");
@@ -50,7 +50,7 @@ describe("Message provider tests", () => {
 
     // Specifying a particular consumer, and the latest pact (non determinstic - used for demonstration!)
     consumerVersionSelectors: [{ consumer: 'pactflow-example-consumer-js-sns', latest: true } ],
-    pactBrokerUrl: process.env.PACT_BROKER_BASE_URL,
+    pactBrokerUrl: process.env.PACT_BROKER_BASE_URL ?? "http://localhost:8000",
     enablePending: true,
   };
 
@@ -60,10 +60,11 @@ describe("Message provider tests", () => {
     ...(process.env.PACT_PUBLISH_VERIFICATION_RESULTS === "true"
       ? { publishVerificationResult: true }
       : {}),
-    messageProviders: {
-      "a product event update": () =>
-        createEvent(new Product("42", "food", "pizza"), "UPDATED"),
-    },
+      messageProviders: {
+        'a product event update': providerWithMetadata(() => createEvent(new Product("42", "food", "pizza"), "UPDATED"), {
+          topic: 'products',
+        }),
+      },
   };
 
   const p = new MessageProviderPact(opts);

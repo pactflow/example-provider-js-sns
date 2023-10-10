@@ -118,7 +118,7 @@ docker:
 
 wait-for-localstack:
 	while [[ "`nc -zv 0.0.0.0 4566`" =~ "succeeded" ]]; do sleep 2; done
-	sleep 1
+	sleep 10
 
 create-topic: wait-for-localstack
 	@IP=$(shell docker inspect -f '{{ .NetworkSettings.IPAddress }}' localstack_main); \
