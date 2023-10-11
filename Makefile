@@ -2,7 +2,7 @@ PACTICIPANT := "pactflow-example-provider-js-sns"
 GITHUB_REPO := "pactflow/example-provider-js-sns"
 PACT_CHANGED_WEBHOOK_UUID := "0278fe46-09be-4b9d-b037-559d2891f752"
 PACT_CLI="docker run --rm -v ${PWD}:${PWD} -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli:latest"
-AWS_CLI="docker run --rm -it -e AWS_ACCESS_KEY_ID=1234 -e AWS_SECRET_ACCESS_KEY=1234 amazon/aws-cli --region ap-southeast-2"
+AWS_CLI:="docker run --rm -it -e AWS_ACCESS_KEY_ID=1234 -e AWS_SECRET_ACCESS_KEY=1234 amazon/aws-cli --region ap-southeast-2"
 AWS_SNS_ENDPOINT := http://localhost:4566
 AWS_REGION := ap-southeast-2
 export AWS_SNS_ENDPOINT
@@ -128,12 +128,12 @@ start: docker create-topic
 	npm start
 
 create-product:
-	curl -v -X POST -H"Content-Type: application/json" localhost:8000/products -d '{"type":"pizza", "name":"food"}'
+	curl -v -X POST -H"Content-Type: application/json" localhost:8001/products -d '{"type":"pizza", "name":"food"}'
 
 update-product:
-	curl -v -X PUT -H"Content-Type: application/json" localhost:8000/products/1 -d '{"type":"pizza", "name":"food", "version":"v1"}'
+	curl -v -X PUT -H"Content-Type: application/json" localhost:8001/products/1 -d '{"type":"pizza", "name":"food", "version":"v1"}'
 
 delete-product:
-	curl -v -X DELETE -H"Content-Type: application/json" localhost:8000/products/1 -d '{"type":"pizza", "name":"food", "version":"v1"}'
+	curl -v -X DELETE -H"Content-Type: application/json" localhost:8001/products/1 -d '{"type":"pizza", "name":"food", "version":"v1"}'
 
 .PHONY: docker docker-stop docker-rm docker-logs
