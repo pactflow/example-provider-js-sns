@@ -46,10 +46,10 @@ describe("Message provider tests", () => {
   const fetchPactsDynamicallyOpts = {
     provider: "pactflow-example-provider-js-sns",
     // consumerVersionTags: ["master", "prod", "main"], //the old way of specifying which pacts to verify
-    // consumerVersionSelectors: [{ deployedOrReleased: true } ], // the new way of specifying which pacts to verify
+    consumerVersionSelectors: [{ deployedOrReleased: true } ], // the new way of specifying which pacts to verify
 
     // Specifying a particular consumer, and the latest pact (non determinstic - used for demonstration!)
-    consumerVersionSelectors: [{ consumer: 'pactflow-example-consumer-js-sns', latest: true } ],
+    // consumerVersionSelectors: [{ consumer: 'pactflow-example-consumer-js-sns', latest: true } ],
     pactBrokerUrl: process.env.PACT_BROKER_BASE_URL ?? "http://localhost:8000",
     enablePending: true,
   };
