@@ -16,7 +16,7 @@
     "@pact-foundation/pact": "16.0.2",
     "dotenv": "17.2.3",
     "eslint": "9.39.1",
-    "aws-sdk": "2.1692.0",
+    "aws-sdk": "2.1693.0",
     "jest": "30.2.0"
   },
   "license": "ISC"
