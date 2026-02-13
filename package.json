@@ -13,7 +13,7 @@
     "express": "^5.0.1"
   },
   "devDependencies": {
-    "@pact-foundation/pact": "16.1.0",
+    "@pact-foundation/pact": "16.2.0",
     "dotenv": "17.2.4",
     "eslint": "9.39.2",
     "aws-sdk": "2.1693.0",
